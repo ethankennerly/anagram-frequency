@@ -1,5 +1,13 @@
 """
 List of words, sorted shortest first, most anagrams second.
+
+    >>> words = read('test_word_list.txt')
+    >>> table = to_table(words, 2, 3)
+    >>> print(to_text(table))
+    word_length,anagram_count,words
+    3,3,ATE,EAT,TEA
+    3,2,BAT,TAB
+    4,2,RATE,TEAR
 """
 
 
@@ -8,21 +16,32 @@ from collections import defaultdict
 
 source_file = 'word_list_moby_crossword.flat.txt'
 output_suffix = '.anagram.csv'
+output_file = 'anagrams_words.csv'
 
 
 def main():
-    open(source_file + output_suffix, 'wb').write(to_text())
+    words = read(source_file)
+    table = to_table(words)
+    open(source_file + output_suffix, 'wb').write(to_text(table))
+    open(output_file, 'wb').write(to_first_word_text(table))
 
 
-def to_text(source_file = source_file, anagram_count_min = 3, word_length_min = 3):
+def to_first_word_text(table):
     """
-    >>> print(to_text('test_word_list.txt', 2, 3))
-    word_length,anagram_count,words
-    3,3,ATE,EAT,TEA
-    3,2,BAT,TAB
-    4,2,RATE,TEAR
+    >>> table = [('length', 'words'), 
+    ...     [3, 'ATE', 'EAT'], 
+    ...     [4, 'RATE', 'TEAR']]
+    >>> print(to_first_word_text(table))
+    ATE
+    RATE
     """
-    words = open(source_file).read().strip().split()
+    column = table[0].index('words')
+    rows = [row[column] for row in table[1:]]
+    text = '\n'.join(rows)
+    return text
+
+    
+def to_table(words, anagram_count_min = 3, word_length_min = 3):
     length_anagrams = make_anagrams(words)
     total = len(length_anagrams)
     table = []
@@ -38,6 +57,15 @@ def to_text(source_file = source_file, anagram_count_min = 3, word_length_min = 
             rows.sort(_compare_0_1_reversed)
             table.extend(rows)
     table.insert(0, ('word_length', 'anagram_count', 'words'))
+    return table
+
+
+def read(source_file):
+    words = open(source_file).read().strip().split()
+    return words
+
+
+def to_text(table):
     lines = [','.join([str(i) for i in line])
         for line in table]
     text = '\n'.join(lines)
