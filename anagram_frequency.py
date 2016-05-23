@@ -114,11 +114,13 @@ def to_first_word_text(table):
     return text
 
     
-def to_table(words, anagram_count_min = 3, word_length_min = 3):
+def to_table(words, anagram_count_min = 3, word_length_min = 3,
+        word_length_max = 10):
     length_anagrams = make_anagrams(words)
     total = len(length_anagrams)
     table = []
-    for word_length in range(word_length_min, word_length_min + total):
+    length_max = min(word_length_min + total, word_length_max + 1)
+    for word_length in range(word_length_min, length_max):
         if word_length in length_anagrams:
             anagrams = length_anagrams[word_length]
             rows = []
