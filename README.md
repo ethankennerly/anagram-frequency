@@ -1,6 +1,9 @@
 # anagram-frequency
 Words sorted shortest first, then most anagrams second.
 
+TWL06.txt tournament word list, and count\_1w.txt copied from Peter Norvig:   http://norvig.com/ngrams/
+See their copyrights.
+
 Here are related algorithms to find anagrams:
 
 http://rosettacode.org/wiki/Anagrams#Python
