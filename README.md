@@ -26,14 +26,16 @@ weighted with word length.
         >>> len(frequencies)
         10
         >>> frequencies[0]
-        'price'
-        >>> table = sort_short_and_frequent(table, frequencies)
+        'PRICE'
+        >>> frequencies_1 = read_first_words('test_frequency_1.txt')
+        >>> frequencies_list = [frequencies, frequencies_1]
+        >>> table = sort_short_and_frequent(table, frequencies_list)
         >>> print(to_text(table))
         word_length,anagram_count,words_frequencies
-        3,3,EAT,90,TEA,80,ATE,40
+        3,3,EAT,90,TEA,80,ATE,10
         3,2,TAB,60,BAT,50
-        4,2,RATE,70,TEAR,30
-        5,2,PRICE,100,RECIP,20
+        4,2,RATE,60,TEAR,30
+        5,2,PRICE,50,RECIP,20
         5,4,STOUR,10,ROUST,0,ROUTS,0,TROUS,0
 
 Extract first words.
@@ -44,6 +46,22 @@ Extract first words.
         RATE
         PRICE
         STOUR
+
+First word in table:
+
+        >>> table = [('word_length', 'words'), 
+        ...     [3, 'ATE', 10, 'EAT', 5], 
+        ...     [4, 'RATE', 5, 'TEAR', 2]]
+        >>> print(to_first_word_text(table))
+        ATE
+        RATE
+
+Optionally, exclude words from first appearance.  This is useful to not list a word that ruffles the feathers of prudes.
+
+        >>> excludes = ['ATE', 'TEAR']
+        >>> print(to_first_word_text(table, excludes))
+        EAT
+        RATE
 
 
 Credits

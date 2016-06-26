@@ -6,7 +6,8 @@ from csv import reader
 source_file = 'TWL06.txt'
 output_suffix = '.anagram.csv'
 output_file = 'anagram_words.txt'
-frequency_file = 'count_1w.txt'
+excludes_file = 'excludes.txt'
+frequency_files = ['count_1w.txt', 'en.txt']
 
 
 def main():
@@ -18,14 +19,19 @@ def main():
     if not path.exists(table_file):
         words = read_first_words(source_file)
         table = to_table(words)
-        frequencies = read_first_words(frequency_file)
-        table = sort_short_and_frequent(table, frequencies)
+        frequencies_list = [
+            read_first_words(frequency_file)
+            for frequency_file in frequency_files
+        ]
+        table = sort_short_and_frequent(table, frequencies_list)
         open(table_file, 'wb').write(to_text(table))
     else:
         table = read_csv(table_file)
         table = sort_weight(table)
         open(table_file, 'wb').write(to_text(table))
-    open(output_file, 'wb').write(to_first_word_text(table))
+    excludes = read_first_words(excludes_file)
+    output = to_first_word_text(table, excludes)
+    open(output_file, 'wb').write(output)
 
 
 def read_csv(table_file):
@@ -47,21 +53,18 @@ def read_csv(table_file):
     return table
 
 
-def to_first_word_text(table):
-    """
-    >>> table = [('word_length', 'words'), 
-    ...     [3, 'ATE', 'EAT'], 
-    ...     [4, 'RATE', 'TEAR']]
-    >>> print(to_first_word_text(table))
-    ATE
-    RATE
-    """
+def to_first_word_text(table, excludes = []):
     column = -1
     for index, fieldname in enumerate(table[0]):
         if fieldname.startswith('words'):
             column = index
             break
-    rows = [row[column] for row in table[1:]]
+    rows = []
+    for row in table[1:]:
+        for item in row:
+            if isinstance(item, str) and item not in excludes:
+                rows.append(item)
+                break
     text = '\n'.join(rows)
     return text
 
@@ -88,8 +91,11 @@ def to_table(words, anagram_count_min = 3, word_length_min = 3,
 
 
 def read_first_words(source_file):
+    """
+    Converts words to upper case.
+    """
     lines = open(source_file).read().strip().splitlines()
-    words = [line.split()[0] for line in lines]
+    words = [line.split()[0].upper() for line in lines]
     return words
 
 
@@ -130,25 +136,32 @@ def make_anagrams(words):
     return lengths
 
 
-def sort_short_and_frequent(table, frequencies):
-    frequencies = [word.lower() for word in frequencies]
-    frequency_count = len(frequencies)
+def sort_short_and_frequent(table, frequencies_list):
+    """
+    Minimum frequency percentile from frequency lists.
+    """
+    frequency_counts = [len(frequencies) 
+        for frequencies in frequencies_list]
     sorted_table = []
     for row in table[1:]:
         frequency_row = list(row[:2])
         frequency = []
         for word in row[2:]:
-            lower = word.lower()
-            if lower in frequencies:
-                index = frequencies.index(lower)
-                percent = int(100 * float(frequency_count - index) / frequency_count)
-            else:
-                percent = 0
-            frequency.append((-percent, word))
+            percentile = 200
+            for frequency_count, frequencies in \
+            zip(frequency_counts, frequencies_list):
+                if word in frequencies:
+                    index = frequencies.index(word)
+                    frequency_percentile = int(round(100 * float(
+                        frequency_count - index) / frequency_count))
+                    percentile = min(percentile, frequency_percentile)
+            if 200 == percentile:
+                percentile = 0
+            frequency.append((-percentile, word))
         frequency.sort()
-        for percent, word in frequency:
+        for percentile, word in frequency:
             frequency_row.append(word)
-            frequency_row.append(-percent)
+            frequency_row.append(-percentile)
         sorted_table.append(frequency_row)
     sorted_table.sort(_compare_length_frequency_sum)
     header = list(table[0])
@@ -164,9 +177,13 @@ def sort_weight(table):
 
 
 def _weight(entry):
+    """
+    Sum a power of frequency.
+    Word frequencies have a skew with a long tail toward infrequent.
+    """
     weight = 500 * entry[0] ** 0.25
     for i in range(3, len(entry), 2):
-        weight -= entry[i]
+        weight -= (entry[i] / 100.0) ** 4 * 100
     return weight
 
 
