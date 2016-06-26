@@ -1,51 +1,3 @@
-"""
-The main program reads cached table if it exists and revises weights.
-
-    >>> main()
-
-It creates a list of single words,
-sorted shortest first, most anagrams second.
-
-    >>> words = read_first_words('test_word_list.txt')
-    >>> table = to_table(words, 2, 3)
-    >>> print(to_text(table))
-    word_length,anagram_count,words
-    3,3,ATE,EAT,TEA
-    3,2,BAT,TAB
-    4,2,RATE,TEAR
-    5,4,ROUST,ROUTS,STOUR,TROUS
-    5,2,PRICE,RECIP
-
-Sort table by sum of word frequency percentiles
-weighted with word length.
-
-    >>> frequencies = read_first_words('test_frequency.txt')
-    >>> len(frequencies)
-    10
-    >>> frequencies[0]
-    'price'
-    >>> table = sort_short_and_frequent(table, frequencies)
-    >>> print(to_text(table))
-    word_length,anagram_count,words_frequencies
-    3,3,EAT,90,TEA,80,ATE,40
-    3,2,TAB,60,BAT,50
-    4,2,RATE,70,TEAR,30
-    5,2,PRICE,100,RECIP,20
-    5,4,STOUR,10,ROUST,0,ROUTS,0,TROUS,0
-
-Extract first words.
-
-    >>> print(to_first_word_text(table))
-    EAT
-    TAB
-    RATE
-    PRICE
-    STOUR
-
-TWL06.txt tournament word list, and count_1w.txt copied from Peter Norvig:   http://norvig.com/ngrams/
-"""
-
-
 from collections import defaultdict
 from os import path
 from csv import reader
@@ -234,4 +186,4 @@ if '__main__' == __name__:
     if len(sys.argv) <= 1:
         main()
     import doctest
-    doctest.testmod()
+    doctest.testfile('README.md')
