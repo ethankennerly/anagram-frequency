@@ -68,7 +68,7 @@ def to_first_word_text(table, excludes = []):
     text = '\n'.join(rows)
     return text
 
-    
+
 def to_table(words, anagram_count_min = 3, word_length_min = 3,
         word_length_max = 10):
     length_anagrams = make_anagrams(words)
@@ -121,7 +121,7 @@ def _compare_0_1_reversed(a, b):
         return 1
     else:
         return 0
-        
+
 
 def make_anagrams(words):
     keys = []
