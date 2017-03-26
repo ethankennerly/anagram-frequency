@@ -32,17 +32,19 @@ Permutations have a factorial distribution.
 
 To estimate difficulty of solving an anagram, these metrics can be composited together.
 
+Example usage from the command line:
+
+        python anagram_difficulty.py sample_word_list.csv en.txt
+
+This appends frequency as seen in the test file.
+
         >>> from anagram_difficulty import *
         >>> tabulate_file('test_word_list.csv', 'test_frequency.txt')
         'test_word_list.difficulty.csv'
 
 For compatibility with the existing files as in this example file, `tabulate_file` expects header of `word` in the list file, but no header for frequency file.
 
-Example usage from the command line:
-
-        python anagram_difficulty.py sample_word_list.csv en.txt
-
-This appends frequency as seen in the test file.
+Since letter permutations is a factorial of length and permutations correlates to difficulty, I appended permutations column and scored by that.
 
 To standardize, standard scores were calculated, technically called z-scores.  <https://en.wikipedia.org/wiki/Standard_score>
 
