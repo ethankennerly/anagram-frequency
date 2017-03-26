@@ -36,6 +36,16 @@ To estimate difficulty of solving an anagram, these metrics can be composited to
         >>> tabulate_file('test_word_list.csv', 'test_frequency.txt')
         'test_word_list.difficulty.csv'
 
+For compatibility with the existing files as in this example file, `tabulate_file` expects header of `word` in the list file, but no header for frequency file.
+
+Example usage from the command line:
+
+        python anagram_difficulty.py sample_word_list.csv en.txt
+
+This appends frequency as seen in the test file.
+
+
+
 # Tabulating
 
 The main program reads cached table if it exists and revises weights.

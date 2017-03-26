@@ -7,7 +7,7 @@ from pandas import read_csv
 
 
 def plot(word_text_path):
-    frame = read_csv(word_text_path, delim_whitespace=True)
+    frame = read_csv(word_text_path, delim_whitespace=True, header=None)
     plot = frame.plot(kind='line', loglog=True)
     png_path = save(plot, '%s.loglog' % word_text_path)
     print('Plotted to %r' % png_path)
