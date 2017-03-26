@@ -44,6 +44,12 @@ Example usage from the command line:
 
 This appends frequency as seen in the test file.
 
+To standardize, standard scores were calculated, technically called z-scores.  <https://en.wikipedia.org/wiki/Standard_score>
+
+Reversed z-score of frequency, so that ascending standard score corresponds to ascending difficulty.
+
+Composited z-scores by summing them.  <http://jeromyanglim.blogspot.com/2009/03/calculating-composite-scores-of-ability.html>
+
 
 
 # Tabulating
