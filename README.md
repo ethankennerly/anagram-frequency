@@ -2,7 +2,11 @@
 
 I plotted log-log and small sample of first and second column.
 
-English word distribution roughly follows an exponential function.
+English word distribution roughly follows a Zipf distribution.
+
+<http://www.intmath.com/exponential-logarithmic-functions/7-graphs-log-semilog.php#zipf>
+
+<https://en.wikipedia.org/wiki/Zipf%27s_law>
 
 Here are samples of word frequency:
 
@@ -15,6 +19,22 @@ Here are samples of word frequency:
 ![count\_1w.txt.xlim\_326.png](count_1w.txt.xlim_326.png)
 
 Words sorted shortest first, then most anagrams second.
+
+## Estimating difficulty from length and frequency
+
+A longer word has more permutations.
+
+A rarer word is less likely to be considered.
+
+The rarity has a Zipf distribution.
+
+Permutations have a factorial distribution.
+
+To estimate difficulty of solving an anagram, these metrics can be composited together.
+
+        >>> from anagram_difficulty import *
+        >>> tabulate_file('test_word_list.csv', 'test_frequency.txt')
+        'test_word_list.difficulty.csv'
 
 # Tabulating
 
