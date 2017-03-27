@@ -5,15 +5,15 @@ See README.md
 
 
 from math import factorial
-from numpy import number, float64
+from numpy import log
+from os.path import splitext
 from pandas import read_csv
 from scipy.stats import zscore
-from os.path import splitext
 
 
 # Was 0.875; 0.75; 0.5
-permutation_weight = 0.75
-frequency_weight = 1.0 - permutation_weight
+length_weight = 0.75
+frequency_weight = 1.0 - length_weight
 word_length_max = 10
 
 word_column = 'word'
@@ -58,9 +58,9 @@ def score_frame(list_frame):
     for raw_column in raw_columns:
         score_column = raw_column + score_suffix
         score_columns.append(score_column)
-        list_frame[score_column] = zscore(list_frame[raw_column])
+        list_frame[score_column] = zscore(log(list_frame[raw_column]))
     list_frame[frequency_score] = -list_frame[frequency_score]
-    list_frame[composite_column] = list_frame[length_score] * permutation_weight \
+    list_frame[composite_column] = list_frame[length_score] * length_weight \
         + list_frame[frequency_score] * frequency_weight
 
 
