@@ -44,7 +44,11 @@ This appends frequency as seen in the test file.
 
 For compatibility with the existing files as in this example file, `tabulate_file` expects header of `word` in the list file, but no header for frequency file.
 
-Since letter permutations is a factorial of length and permutations correlates to difficulty, I appended permutations column and scored by that.
+Word frequency correlated to difficulty.  <http://journals.sagepub.com/doi/abs/10.1111/j.1467-9280.1996.tb00336.x>
+
+Since letter permutations is a factorial of length and permutations correlates to difficulty, I appended permutations column and scored by that.  Very long words have too many permutations to compute, so I discarded words over 24 letters long.
+
+To ensure that frequencies and permutations were standardized, I standardized both on the frequency file.  Otherwise there is a bias when the sample word list is not a representative sample of the word frequency list.
 
 To standardize, standard scores were calculated, technically called z-scores.  <https://en.wikipedia.org/wiki/Standard_score>
 
