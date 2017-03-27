@@ -46,7 +46,7 @@ For compatibility with the existing files as in this example file, `tabulate_fil
 
 Word frequency correlated to difficulty.  <http://journals.sagepub.com/doi/abs/10.1111/j.1467-9280.1996.tb00336.x>
 
-Since letter permutations is a factorial of length and permutations correlates to difficulty, I appended permutations column and scored by that.  Very long words have too many permutations to compute, so I discarded words over 24 letters long.
+Although letter permutations is a factorial of length and permutations correlates to difficulty, I appended permutations column and scored by that.  Very long words have too many permutations to compute, so I discarded words over many letters long.  Yet permutations biased the long words too heavily.  So I scored by letter length instead.
 
 To ensure that frequencies and permutations were standardized, I standardized both on the frequency file.  Otherwise there is a bias when the sample word list is not a representative sample of the word frequency list.
 
