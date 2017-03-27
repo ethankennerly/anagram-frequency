@@ -36,6 +36,10 @@ Example usage from the command line:
 
         python anagram_difficulty.py sample_word_list.csv en.txt
 
+That creates an output table sorted by estimate of difficulty from length and frequency.  Here is one sample:
+
+[sample\_word\_list.difficulty.csv](sample_word_list.difficulty.csv)
+
 This appends frequency as seen in the test file.
 
         >>> from anagram_difficulty import *
